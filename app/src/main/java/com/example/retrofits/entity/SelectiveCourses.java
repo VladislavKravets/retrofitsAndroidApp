@@ -4,25 +4,17 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class SelectiveCourses {
-    @SerializedName("id")
-    @Expose
     private final long id;
-    @SerializedName("subject")
-    @Expose
     private final String subject; // Предмети
-    @SerializedName("faculty")
-    @Expose
+    private final String infoSubject; // Інформація про предмет
     private final String faculty; // Факультет
-    @SerializedName("fullNameTeacher")
-    @Expose
     private final String fullNameTeacher;
-    @SerializedName("countStudents")
-    @Expose
     private final int countStudents; // Кількість вибраних студентами предмету
 
-    public SelectiveCourses(long id, String subject, String faculty, String fullNameTeacher, int countStudents) {
+    public SelectiveCourses(long id, String subject, String infoSubject, String faculty, String fullNameTeacher, int countStudents) {
         this.id = id;
         this.subject = subject;
+        this.infoSubject = infoSubject;
         this.faculty = faculty;
         this.fullNameTeacher = fullNameTeacher;
         this.countStudents = countStudents;
@@ -34,6 +26,10 @@ public class SelectiveCourses {
 
     public String getSubject() {
         return subject;
+    }
+
+    public String getInfoSubject() {
+        return infoSubject;
     }
 
     public String getFaculty() {

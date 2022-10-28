@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import android.text.method.ScrollingMovementMethod;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -32,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void getDataFromUrl() {
         final ListView listView = findViewById(R.id.listView);
-        //textView.setMovementMethod(new ScrollingMovementMethod());
-
+        final TextView textView = findViewById(R.id.status_error);
+        SelectiveCoursesAdapter selectiveCoursesAdapter = new SelectiveCoursesAdapter(this);
         NetworkService.getInstance(URL)
                 .getJSONApi()
                 .getSelectiveCourses()
@@ -41,16 +42,15 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(@NonNull Call<List<SelectiveCourses>> call, @NonNull Response<List<SelectiveCourses>> response) {
                         List<SelectiveCourses> post = response.body();
-                        ArrayAdapter<SelectiveCourses> adapter =
-                                new ArrayAdapter<SelectiveCourses>(getApplicationContext(), android.R.layout.simple_list_item_1, post);
-
-                        listView.setAdapter(adapter);
+                        selectiveCoursesAdapter.setSelectiveCoursesList(post);
+                        listView.setAdapter(selectiveCoursesAdapter);
+                        selectiveCoursesAdapter.notifyDataSetChanged();
                     }
 
-                    @SuppressLint("SetTextI18n")
                     @Override
                     public void onFailure(@NonNull Call<List<SelectiveCourses>> call, @NonNull Throwable t) {
-                        //textView.setText("Error occurred while getting request!");
+                        textView.setVisibility(View.VISIBLE);
+                        textView.setText("Error\n404");
                         t.printStackTrace();
                     }
                 });
